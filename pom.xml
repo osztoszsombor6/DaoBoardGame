@@ -6,6 +6,18 @@
     <artifactId>DaoBoardGame</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
+    <description>Two player Board game implemented in JavaFX based on the Model-View-Controller (MVC) architectural pattern.</description>
+    <developers>
+        <developer>
+            <name>Osztós Zsombor</name>
+            <email>osztos.zsombor@gmail.com</email>
+            <organization>Faculty of Informatics, University of Debrecen</organization>
+            <organizationUrl>https://inf.unideb.hu/</organizationUrl>
+        </developer>
+    </developers>
+    <scm>
+        <developerConnection>scm:git:https://github.com/osztoszsombor6/DaoBoardGame.git</developerConnection>
+    </scm>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>16</maven.compiler.release>
