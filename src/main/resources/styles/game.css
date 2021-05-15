@@ -1,0 +1,29 @@
+.square {
+    -fx-border-style: solid;
+}
+
+.square:hover {
+    -fx-background-color: #e0e0e0;
+}
+
+.square.lephet {
+    -fx-background-color: lightblue;
+}
+
+.square.kivalasztott  {
+    -fx-background-color: aquamarine;
+}
+
+.activePlayer1 {
+    -fx-background-color: red;
+    -fx-text-fill: white;
+}
+
+.activePlayer2 {
+    -fx-background-color: blue;
+    -fx-text-fill: white;
+}
+
+.TTTsquare > .kor:hover {
+    -fx-background-color: whitesmoke;
+}
