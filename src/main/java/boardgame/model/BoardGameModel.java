@@ -9,26 +9,36 @@ public class BoardGameModel {
 
     private ReadOnlyObjectWrapper<Square>[][] board = new ReadOnlyObjectWrapper[BOARD_SIZE][BOARD_SIZE];
     
-    private Square currentPlayer = Square.PLAYER1;
+    private Square currentPlayer;
     
     public Square getCurrentPlayer(){
         return this.currentPlayer;
     }
 
     public BoardGameModel() {
+        
+        this(new String[]
+            {"1002",
+             "0120",
+             "0210",
+             "2001"},
+             Square.PLAYER1);
+        
+    }
+    
+    public BoardGameModel(String[] boardrep, Square player){
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
-                Square e = Square.NONE;
-                if (i == j) {
-                    e = Square.PLAYER1;
-                } else {
-                    if (i == BOARD_SIZE - j - 1) {
-                        e = Square.PLAYER2;
-                    }
-                }
-                board[i][j] = new ReadOnlyObjectWrapper<Square>(e);
+                Square element =
+                    switch (boardrep[i].charAt(j)){
+                        case '1' -> Square.PLAYER1;
+                        case '2' -> Square.PLAYER2;
+                        default -> Square.NONE;
+                };
+                board[i][j] = new ReadOnlyObjectWrapper<Square>(element);
             }
         }
+        currentPlayer = player;
     }
 
     public ReadOnlyObjectProperty<Square> squareProperty(int i, int j) {
@@ -38,92 +48,82 @@ public class BoardGameModel {
     public Square getSquare(int i, int j) {
         return board[i][j].get();
     }
-
-    public void move(int i, int j) {
-        board[i][j].set(                
-                switch (board[i][j].get()) {
-                    case NONE -> Square.PLAYER1;
-                    case PLAYER1 -> Square.PLAYER2;
-                    case PLAYER2 -> Square.NONE;
-                }
-        );
-    }
     
-    public boolean lephet(int honnanX, int honnanY, int hovaX, int hovaY) {
+    public boolean legalMove(int fromX, int fromY, int toX, int toY) {
         
-        if (honnanX < 0 || honnanY < 0) {
+        if (fromX < 0 || fromY < 0) {
             return false;
         }
-        if(board[honnanX][honnanY].get() != currentPlayer){
+        if(board[fromX][fromY].get() != currentPlayer){
             return false;
         }
 
-        if(honnanX == hovaX && honnanY == hovaY){
+        if(fromX == toX && fromY == toY){
             return false;
         }
         //System.out.print("  " + honnanX + " " + honnanY + " " + hovaX + " " + hovaY);
-        if (honnanY == hovaY ) {
-            if(honnanX < hovaX){
-                for(int i = honnanX + 1; i <= hovaX; ++i){
-                    if(getSquare(i, hovaY) != Square.NONE){
+        if (fromY == toY ) {
+            if(fromX < toX){
+                for(int i = fromX + 1; i <= toX; ++i){
+                    if(getSquare(i, toY) != Square.NONE){
                         return false;
                     }
                 }
                 return true;
             } else {
-                for(int i = honnanX - 1; i >= hovaX; --i){
-                    if(getSquare(i, hovaY) != Square.NONE){
+                for(int i = fromX - 1; i >= toX; --i){
+                    if(getSquare(i, toY) != Square.NONE){
                         return false;
                     }
                 }
                 return true;
             }
         }
-        if (honnanX == hovaX){
-            if(honnanY < hovaY){
-                for(int i = honnanY + 1; i <= hovaY; ++i){
-                    if(getSquare(hovaX, i) != Square.NONE){
+        if (fromX == toX){
+            if(fromY < toY){
+                for(int i = fromY + 1; i <= toY; ++i){
+                    if(getSquare(toX, i) != Square.NONE){
                         return false;
                     }
                 }
                 return true;
             } else {
-                for(int i = honnanY - 1; i >= hovaY; --i){
-                    if(getSquare(hovaX, i) != Square.NONE){
+                for(int i = fromY - 1; i >= toY; --i){
+                    if(getSquare(toX, i) != Square.NONE){
                         return false;
                     }
                 }
                 return true;
             }
         }
-        if(hovaX-honnanX == hovaY-honnanY){
-            if(hovaX > honnanX){
-                for(int i = honnanX + 1; i <= hovaX; ++i){
-                    if(getSquare(i, honnanY + (i-honnanX)) != Square.NONE){
+        if(toX-fromX == toY-fromY){
+            if(toX > fromX){
+                for(int i = fromX + 1; i <= toX; ++i){
+                    if(getSquare(i, fromY + (i-fromX)) != Square.NONE){
                         return false;
                     }
                 }
                 return true;
             } else {
-                for(int i = honnanX - 1; i >= hovaX; --i){
-                    if(getSquare(i, honnanY + (i-honnanX)) != Square.NONE){
+                for(int i = fromX - 1; i >= toX; --i){
+                    if(getSquare(i, fromY + (i-fromX)) != Square.NONE){
                         return false;
                     }
                 }
                 return true;
             }
         }
-        if(hovaX-honnanX == -(hovaY-honnanY)){
-            if(hovaX > honnanX){
-                for(int i = honnanX + 1; i <= hovaX; ++i){
-                    if(getSquare(i, honnanY - (i-honnanX)) != Square.NONE){
+        if(toX-fromX == -(toY-fromY)){
+            if(toX > fromX){
+                for(int i = fromX + 1; i <= toX; ++i){
+                    if(getSquare(i, fromY - (i-fromX)) != Square.NONE){
                         return false;
                     }
                 }
                 return true;
             } else {
-                for(int i = honnanX - 1; i >= hovaX; --i){
-                    if(getSquare(i, honnanY - (i-honnanX)) != Square.NONE){
+                for(int i = fromX - 1; i >= toX; --i){
+                    if(getSquare(i, fromY - (i-fromX)) != Square.NONE){
                         return false;
                     }
                 }
@@ -133,9 +133,9 @@ public class BoardGameModel {
         return false;
     }
     
-    public void lep(int honnanX, int honnanY, int hovaX, int hovaY){
-        board[hovaX][hovaY].set(board[honnanX][honnanY].get());
-        board[honnanX][honnanY].set(Square.NONE);
+    public void move(int fromX, int fromY, int toX, int toY){
+        board[toX][toY].set(board[fromX][fromY].get());
+        board[fromX][fromY].set(Square.NONE);
         if(currentPlayer == Square.PLAYER1){
             currentPlayer = Square.PLAYER2;
         } else {
@@ -263,6 +263,14 @@ public class BoardGameModel {
     }
     
     public Square getWinner(){
+        if(!isEndState2x2() &&
+                !isEndStateCol() &&
+                !isEndStateRow() &&
+                !isEndStateCornered() &&
+                !isEndStateCorners()){
+            return Square.NONE;
+        }
+            
         Square otherPlayer;
         if(currentPlayer == Square.PLAYER1){
             otherPlayer = Square.PLAYER2;
@@ -277,6 +285,7 @@ public class BoardGameModel {
         }
     }
 
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < BOARD_SIZE; i++) {

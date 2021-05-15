@@ -231,21 +231,20 @@ public class BoardGameController {
                 for (int j = 0; j < board.getColumnCount(); j++) {
                     if (i != x || j != y) {
                         Node n = getNodeByRowColumnIndex(i, j, board);
-                        boolean lephet = model.lephet(x, y, i, j);
-                        if (lephet) {
+                        boolean legalmove = model.legalMove(x, y, i, j);
+                        if (legalmove) {
                             n.getStyleClass().add("lephet");
                         } else {
                             n.getStyleClass().remove("lephet");
                         }
-                        //n.getStyleClass().remove("kivalasztott");
                     }
                 }
             }
         } else {
             if(x != -1 && y !=-1){
                 System.out.println("lephet(" + x + "," + y + "," + row + "," + col +")");
-                if(model.lephet(x,y,row,col)){
-                model.lep(x, y, row, col);
+                if(model.legalMove(x,y,row,col)){
+                model.move(x, y, row, col);
                 markActiveLabel();
                 
                 }
@@ -260,7 +259,7 @@ public class BoardGameController {
                     persistGame();
                     showEndState();
                     
-                    System.out.println("VÉGE!!!");
+                    System.out.println("Game ended");
                     if(model.isEndState2x2()){
                         System.out.println("2x2");
                     }
