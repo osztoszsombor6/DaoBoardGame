@@ -26,7 +26,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class BoardGameController {
 
     @FXML
@@ -92,10 +94,10 @@ public class BoardGameController {
                 .build();
         
         gameResultDao.persist(result);
-        List<GameResult> list = gameResultDao.findLatest(10);
-        for(GameResult r : list){
-            System.out.println(r.getWinner() + " " + r.getFinished());
-        }
+//        List<GameResult> list = gameResultDao.findLatest(10);
+//        for(GameResult r : list){
+//            System.out.println(r.getWinner() + " " + r.getFinished());
+//        }
         
 //        System.out.println("Persistgame");
 //        System.out.println(player1Name);
@@ -208,7 +210,8 @@ public class BoardGameController {
         var square = (StackPane) event.getSource();
         var row = GridPane.getRowIndex(square);
         var col = GridPane.getColumnIndex(square);
-        System.out.printf("Click on square (%d,%d)\n", row, col);
+        //System.out.printf("Click on square (%d,%d)\n", row, col);
+        log.debug("Click on square ({},{})\n", row, col);
         for (int i = 0; i < board.getRowCount(); i++) {
             for (int j = 0; j < board.getColumnCount(); j++) {
                 Node n = getNodeByRowColumnIndex(i, j, board);
@@ -218,8 +221,8 @@ public class BoardGameController {
         }
         
         if((x == -1 && y == -1) && model.getSquare(row, col) == model.getCurrentPlayer()){
-            System.out.println(model.getSquare(row, col));
-            System.out.println(model.getCurrentPlayer());
+            log.info(model.getSquare(row, col).toString());
+            log.info(model.getCurrentPlayer().toString());
             square.getStyleClass().add("kivalasztott");
             x = row;
             y = col;
@@ -282,7 +285,7 @@ public class BoardGameController {
     }
     
     public void continueAction(ActionEvent actionEvent) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/launch.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/latestten.fxml"));
         Parent root = fxmlLoader.load();
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
