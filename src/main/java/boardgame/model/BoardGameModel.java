@@ -143,7 +143,6 @@ public class BoardGameModel {
         if(fromX == toX && fromY == toY){
             return false;
         }
-        //System.out.print("  " + honnanX + " " + honnanY + " " + hovaX + " " + hovaY);
         if (fromY == toY ) {
             if(fromX < toX){
                 for(int i = fromX + 1; i <= toX; ++i){

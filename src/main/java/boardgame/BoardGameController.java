@@ -17,7 +17,6 @@ import boardgame.model.Square;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.ZonedDateTime;
-import java.util.List;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -108,10 +107,8 @@ public class BoardGameController {
     
     private void markActiveLabel(){
         if(model.getCurrentPlayer() == Square.PLAYER1){
-            //List<String> temp = player1Label.getStyleClass();
             player1Label.getStyleClass().add("activePlayer1");
             player2Label.getStyleClass().remove("activePlayer2");
-            //temp = player1Label.getStyleClass();
         } else {
             player2Label.getStyleClass().add("activePlayer2");
             player1Label.getStyleClass().remove("activePlayer1");
@@ -147,30 +144,6 @@ public class BoardGameController {
         var square = new StackPane();
         square.getStyleClass().add("square");
         var piece = new Circle(50);
-/*
-        piece.fillProperty().bind(Bindings.when(model.squareProperty(i, j).isEqualTo(Square.NONE))
-                .then(Color.TRANSPARENT)
-                .otherwise(Bindings.when(model.squareProperty(i, j).isEqualTo(Square.HEAD))
-                        .then(Color.RED)
-                        .otherwise(Color.BLUE))
-        );
-*/
-
-//        piece.strokeProperty().bind(
-//                new ObjectBinding<Paint>() {
-//                    {
-//                        super.bind(model.squareProperty(i, j));
-//                    }
-//                    @Override
-//                    protected Paint computeValue() {
-//                        
-//                        if (i == x || j == y) {
-//                            return Color.BLACK;
-//                        }
-//                        return Color.WHITESMOKE;
-//                    }
-//                }
-//        );
         
         piece.fillProperty().bind(
                 new ObjectBinding<Paint>() {
