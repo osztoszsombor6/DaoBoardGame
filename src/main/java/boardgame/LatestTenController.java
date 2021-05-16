@@ -38,6 +38,9 @@ public class LatestTenController {
     
     @FXML
     private TableColumn<GameResult, String> winner;
+    
+    @FXML
+    private TableColumn<GameResult, String> winCondition;
 
     @FXML
     private TableColumn<GameResult, Duration> duration;
@@ -66,6 +69,7 @@ public class LatestTenController {
         player1.setCellValueFactory(new PropertyValueFactory<>("player1"));
         player2.setCellValueFactory(new PropertyValueFactory<>("player2"));
         winner.setCellValueFactory(new PropertyValueFactory<>("winner"));
+        winCondition.setCellValueFactory(new PropertyValueFactory<>("winCondition"));
         duration.setCellValueFactory(new PropertyValueFactory<>("duration"));
         created.setCellValueFactory(new PropertyValueFactory<>("created"));
 

@@ -6,11 +6,11 @@
     -fx-background-color: #e0e0e0;
 }
 
-.square.lephet {
+.square.step {
     -fx-background-color: lightblue;
 }
 
-.square.kivalasztott  {
+.square.selected  {
     -fx-background-color: aquamarine;
 }
 
@@ -22,8 +22,4 @@
 .activePlayer2 {
     -fx-background-color: blue;
     -fx-text-fill: white;
-}
-
-.TTTsquare > .kor:hover {
-    -fx-background-color: whitesmoke;
 }

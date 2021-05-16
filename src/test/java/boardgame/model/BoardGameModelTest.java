@@ -10,6 +10,7 @@ public class BoardGameModelTest {
     BoardGameModel baseBoard;
     
     public BoardGameModelTest() {
+
     }
     
    
@@ -18,11 +19,35 @@ public class BoardGameModelTest {
         baseBoard = new BoardGameModel();
     }
     
+    @Test
+    void testTwoArgConstructor_shouldThrowException() {
+        
+        assertThrows(IllegalArgumentException.class, () -> new BoardGameModel(null,Square.PLAYER1));
+        assertThrows(IllegalArgumentException.class, () -> new BoardGameModel(new String[]{
+                "0000",
+                "1122",
+                "2211",
+                "0000"},Square.NONE));
+        assertThrows(IllegalArgumentException.class, () -> new BoardGameModel(new String[] {
+                "1111",
+                "2222"}, Square.PLAYER1));
+        assertThrows(IllegalArgumentException.class, () -> new BoardGameModel(new String[] {
+                "1111",
+                "2222",
+                "0000",
+                "000"}, Square.PLAYER1));
+        assertThrows(IllegalArgumentException.class, () -> new BoardGameModel(new String[] {
+                "1110",
+                "2220",
+                "0001",
+                "0000"}, Square.PLAYER1));
+        
+    }
 
     @Test
     public void testGetCurrentPlayer() {
         assertEquals(Square.PLAYER1, baseBoard.getCurrentPlayer());
-        baseBoard.move(0, 0, 0, 1);
+        baseBoard.move(new BoardPosition(0, 0), new BoardPosition(0, 1));
         assertEquals(Square.PLAYER2, baseBoard.getCurrentPlayer());
     }
 
@@ -51,47 +76,45 @@ public class BoardGameModelTest {
                              "0000"},
                              Square.PLAYER1);
         
-        //wrong coordinates
-        assertEquals(false, baseBoard.legalMove(-1, -1, 0, 0));
         //wrong player
-        assertEquals(false, baseBoard.legalMove(0, 3, 0, 2));
+        assertEquals(false, baseBoard.legalMove(new BoardPosition(0, 3), new BoardPosition(0, 2)));
         //no movement not allowed
-        assertEquals(false, baseBoard.legalMove(0, 0, 0, 0));
+        assertEquals(false, baseBoard.legalMove(new BoardPosition(0, 0), new BoardPosition(0, 0)));
         //moving right
-        assertEquals(true, baseBoard.legalMove(0, 0, 0, 2));
-        assertEquals(false, baseBoard.legalMove(0, 0, 0, 3));
+        assertEquals(true, baseBoard.legalMove(new BoardPosition(0, 0), new BoardPosition(0, 2)));
+        assertEquals(false, baseBoard.legalMove(new BoardPosition(0, 0), new BoardPosition(0, 3)));
         //moving left
-        assertEquals(true, baseBoard.legalMove(1, 1, 1, 0));
-        assertEquals(false, baseBoard.legalMove(2, 2, 2, 1));
+        assertEquals(true, baseBoard.legalMove(new BoardPosition(1, 1), new BoardPosition(1, 0)));
+        assertEquals(false, baseBoard.legalMove(new BoardPosition(2, 2), new BoardPosition(2, 1)));
         //moving down
-        assertEquals(true, baseBoard.legalMove(0, 0, 2, 0));
-        assertEquals(false, baseBoard.legalMove(0, 0, 3, 0));
+        assertEquals(true, baseBoard.legalMove(new BoardPosition(0, 0), new BoardPosition(2, 0)));
+        assertEquals(false, baseBoard.legalMove(new BoardPosition(0, 0), new BoardPosition(3, 0)));
         //moving up
-        assertEquals(true, baseBoard.legalMove(3, 3, 2, 3));
-        assertEquals(false, baseBoard.legalMove(2, 2, 0, 2));
+        assertEquals(true, baseBoard.legalMove(new BoardPosition(3, 3), new BoardPosition(2, 3)));
+        assertEquals(false, baseBoard.legalMove(new BoardPosition(2, 2), new BoardPosition(0, 2)));
         //moving up and right
-        assertEquals(true, testBoard.legalMove(1, 1, 0, 2));
-        assertEquals(false, testBoard.legalMove(2, 2, 1, 3));
+        assertEquals(true, testBoard.legalMove(new BoardPosition(1, 1), new BoardPosition(0, 2)));
+        assertEquals(false, testBoard.legalMove(new BoardPosition(2, 2), new BoardPosition(1, 3)));
         //moving up and left
-        assertEquals(true, testBoard.legalMove(1, 1, 0, 0));
-        assertEquals(false, testBoard.legalMove(2, 2, 1, 1));
+        assertEquals(true, testBoard.legalMove(new BoardPosition(1, 1), new BoardPosition(0, 0)));
+        assertEquals(false, testBoard.legalMove(new BoardPosition(2, 2), new BoardPosition(1, 1)));
         //moving down and right
-        assertEquals(true, testBoard.legalMove(2, 2, 3, 3));
-        assertEquals(false, testBoard.legalMove(1, 0, 3, 2));
+        assertEquals(true, testBoard.legalMove(new BoardPosition(2, 2), new BoardPosition(3, 3)));
+        assertEquals(false, testBoard.legalMove(new BoardPosition(1, 0), new BoardPosition(3, 2)));
         //moving down and left
-        assertEquals(true, testBoard.legalMove(2, 3, 3, 2));
-        assertEquals(false, testBoard.legalMove(1, 1, 2, 0));
+        assertEquals(true, testBoard.legalMove(new BoardPosition(2, 3), new BoardPosition(3, 2)));
+        assertEquals(false, testBoard.legalMove(new BoardPosition(1, 1), new BoardPosition(2, 0)));
         //incorrect movement direction
-        assertEquals(false, baseBoard.legalMove(0, 0, 2, 1));
+        assertEquals(false, baseBoard.legalMove(new BoardPosition(0, 0), new BoardPosition(2, 1)));
     }
 
     @Test
     public void testMove() {
-        baseBoard.move(0, 0, 0, 2);
+        baseBoard.move(new BoardPosition(0, 0), new BoardPosition(0, 2));
         assertEquals(Square.PLAYER1, baseBoard.getSquare(0, 2));
         assertEquals(Square.NONE, baseBoard.getSquare(0, 0));
         assertEquals(Square.PLAYER2, baseBoard.getCurrentPlayer());
-        baseBoard.move(3, 0, 0, 0);
+        baseBoard.move(new BoardPosition(3, 0), new BoardPosition(0, 0));
         assertEquals(Square.NONE, baseBoard.getSquare(3, 0));
         assertEquals(Square.PLAYER2, baseBoard.getSquare(0, 0));
         assertEquals(Square.PLAYER1, baseBoard.getCurrentPlayer());

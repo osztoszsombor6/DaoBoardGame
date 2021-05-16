@@ -7,22 +7,23 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boardgame.LatestTenController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boardgame.LatestTenController">
    <children>
-      <TableView fx:id="latesttenTable" editable="true" layoutX="25.0" layoutY="74.0" prefHeight="350.0" prefWidth="610.0">
+      <TableView fx:id="latesttenTable" editable="true" layoutX="25.0" layoutY="74.0" prefHeight="350.0" prefWidth="710.0">
         <columns>
           <TableColumn fx:id="player1" prefWidth="100.0" text="Player1" />
           <TableColumn fx:id="player2" prefWidth="100.0" text="Player2" />
           <TableColumn fx:id="winner" prefWidth="100.0" text="Winner" />
+          <TableColumn fx:id="winCondition" prefWidth="100.0" text="Win condition" />
           <TableColumn fx:id="duration" prefWidth="100.0" text="Duration" />
           <TableColumn fx:id="created" prefWidth="200.0" text="Date" />
         </columns>
       </TableView>
-      <Label layoutX="227.0" layoutY="28.0" text="The ten latest games:">
+      <Label layoutX="277.0" layoutY="27.0" text="The ten latest games:">
          <font>
             <Font size="22.0" />
          </font>
       </Label>
-      <Button layoutX="264.0" layoutY="435.0" mnemonicParsing="false" onAction="#back" prefHeight="51.0" prefWidth="122.0" text="Main menu" />
+      <Button layoutX="314.0" layoutY="435.0" mnemonicParsing="false" onAction="#back" prefHeight="51.0" prefWidth="122.0" text="Main menu" />
    </children>
 </Pane>

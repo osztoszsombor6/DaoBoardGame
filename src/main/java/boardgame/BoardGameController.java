@@ -10,6 +10,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
 import boardgame.model.BoardGameModel;
+import boardgame.model.BoardPosition;
 import boardgame.model.GameResult;
 import boardgame.model.GameResultDao;
 import boardgame.model.Square;
@@ -39,6 +40,7 @@ public class BoardGameController {
     private String player1Name;
     private String player2Name;
     private String winnerName;
+    private String winCondition;
     
     private ZonedDateTime started;
     private ZonedDateTime finished;
@@ -54,14 +56,14 @@ public class BoardGameController {
     private Button continueButton;
 
     private BoardGameModel model = new BoardGameModel();
-    int x;
-    int y;
+    int selectedX;
+    int selectedY;
     private boolean gameEnded = false;
 
     @FXML
     private void initialize() {
-        x = -1;
-        y = -1;
+        selectedX = -1;
+        selectedY = -1;
         for (int i = 0; i < board.getRowCount(); i++) {
             for (int j = 0; j < board.getColumnCount(); j++) {
                 var square = createSquare(i, j);
@@ -89,22 +91,12 @@ public class BoardGameController {
                 .player2(player2Name)
                 .duration(duration)
                 .winner(winnerName)
+                .winCondition(winCondition)
                 .started(started)
                 .finished(finished)
                 .build();
         
         gameResultDao.persist(result);
-//        List<GameResult> list = gameResultDao.findLatest(10);
-//        for(GameResult r : list){
-//            System.out.println(r.getWinner() + " " + r.getFinished());
-//        }
-        
-//        System.out.println("Persistgame");
-//        System.out.println(player1Name);
-//        System.out.println(player2Name);
-//        System.out.println(winnerName);
-//        System.out.println(started);
-//        System.out.println(finished);
         
     }
     
@@ -201,6 +193,40 @@ public class BoardGameController {
         return square;
     }
     
+    private void selectSquare(StackPane square){
+        var row = GridPane.getRowIndex(square);
+        var col = GridPane.getColumnIndex(square);
+        square.getStyleClass().add("selected");
+            selectedX = row;
+            selectedY = col;
+            BoardPosition selectedPos = new BoardPosition(selectedX,selectedY);
+            
+            for (int i = 0; i < board.getRowCount(); i++) {
+                for (int j = 0; j < board.getColumnCount(); j++) {
+                    if (i != selectedX || j != selectedY) {
+                        Node n = getNodeByRowColumnIndex(i, j, board);
+                        
+                        if (model.legalMove(selectedPos, new BoardPosition(i,j))) {
+                            n.getStyleClass().add("step");
+                        } else {
+                            n.getStyleClass().remove("step");
+                        }
+                    }
+                }
+            }
+    }
+    
+    private void moveSelectedSquare(StackPane square, BoardPosition selectedPos){
+        
+        var row = GridPane.getRowIndex(square);
+        var col = GridPane.getColumnIndex(square);
+        
+        if(model.legalMove(selectedPos,new BoardPosition(row,col))){
+                    log.info("{} moving from ({},{}) to ({},{})", model.getCurrentPlayer(), selectedX, selectedY, row, col);
+                    model.move(selectedPos,new BoardPosition(row,col));
+                    markActiveLabel();
+                }
+    }
 
     @FXML
     private void handleMouseClick(MouseEvent event) {
@@ -210,69 +236,54 @@ public class BoardGameController {
         var square = (StackPane) event.getSource();
         var row = GridPane.getRowIndex(square);
         var col = GridPane.getColumnIndex(square);
-        //System.out.printf("Click on square (%d,%d)\n", row, col);
         log.debug("Click on square ({},{})", row, col);
+        
         for (int i = 0; i < board.getRowCount(); i++) {
             for (int j = 0; j < board.getColumnCount(); j++) {
                 Node n = getNodeByRowColumnIndex(i, j, board);
-                n.getStyleClass().remove("kivalasztott");
-                n.getStyleClass().remove("lephet");
+                n.getStyleClass().remove("selected");
+                n.getStyleClass().remove("step");
             }
         }
         
-        if((x == -1 && y == -1) && model.getSquare(row, col) == model.getCurrentPlayer()){
-            square.getStyleClass().add("kivalasztott");
-            x = row;
-            y = col;
-            
-            for (int i = 0; i < board.getRowCount(); i++) {
-                for (int j = 0; j < board.getColumnCount(); j++) {
-                    if (i != x || j != y) {
-                        Node n = getNodeByRowColumnIndex(i, j, board);
-                        boolean legalmove = model.legalMove(x, y, i, j);
-                        if (legalmove) {
-                            n.getStyleClass().add("lephet");
-                        } else {
-                            n.getStyleClass().remove("lephet");
-                        }
-                    }
-                }
-            }
+        if((selectedX == -1 && selectedY == -1) && model.getSquare(row, col) == model.getCurrentPlayer()){
+            selectSquare(square);
         } else {
-            if(x != -1 && y !=-1){
-                if(model.legalMove(x,y,row,col)){
-                    log.info("{} moving from ({},{}) to ({},{})", model.getCurrentPlayer(), x, y, row, col);
-                    model.move(x, y, row, col);
-                    markActiveLabel();
+            if(selectedX != -1 && selectedY !=-1){
+                BoardPosition selectedPos = new BoardPosition(selectedX,selectedY);
+                moveSelectedSquare(square, selectedPos);
+                selectedX = -1;
+                selectedY = -1;
                 
-                }
-                x = -1;
-                y = -1;
                 if(model.isEndState2x2()
                         || model.isEndStateCol()
                         || model.isEndStateRow()
                         || model.isEndStateCorners()
                         || model.isEndStateCornered()){
-                    setEndState();
-                    persistGame();
-                    showEndState();
                     
                     if(model.isEndState2x2()){
                         log.info("Game ended, {} wins with 2x2 area", model.getWinner());
+                        winCondition = "2 by 2 area";
                     }
                     if(model.isEndStateCol()){
                         log.info("Game ended, {} wins with column", model.getWinner());
+                        winCondition = "Column";
                     }
                     if(model.isEndStateRow()){
                         log.info("Game ended, {} wins with row", model.getWinner());
+                        winCondition = "Row";
                     }
                     if(model.isEndStateCorners()){
                         log.info("Game ended, {} wins with 4 corners", model.getWinner());
+                        winCondition = "4 Corners";
                     }
                     if(model.isEndStateCornered()){
                         log.info("Game ended, {} wins, cornered disk", model.getWinner());
+                        winCondition = "Cornered";
                     }
-                    
+                    setEndState();
+                    persistGame();
+                    showEndState();
                 }
             }
             

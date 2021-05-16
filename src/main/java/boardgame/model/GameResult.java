@@ -10,7 +10,7 @@ import java.time.Duration;
 import java.time.ZonedDateTime;
 
 /**
- * Class representing the result of a game played by a specific player.
+ * Class representing the result of a game played by two players.
  */
 @Data
 @NoArgsConstructor
@@ -40,6 +40,12 @@ public class GameResult {
      */
     @Column(nullable = false)
     private String winner;
+    
+    /**
+     * Describes how the match ended.
+     */
+    @Column(nullable = false)
+    private String winCondition;
     
     @Column(nullable = false)
     private ZonedDateTime started;

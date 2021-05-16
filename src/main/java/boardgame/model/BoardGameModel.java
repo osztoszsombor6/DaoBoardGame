@@ -27,6 +27,14 @@ public class BoardGameModel {
     }
     
     public BoardGameModel(String[] boardrep, Square player){
+        
+        if(player == null || player == Square.NONE){
+            throw new IllegalArgumentException();
+        }
+        if (!isValidTray(boardrep)) {
+            throw new IllegalArgumentException();
+        }
+        
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
                 Square element =
@@ -40,6 +48,37 @@ public class BoardGameModel {
         }
         currentPlayer = player;
     }
+    
+    public boolean isValidTray(String[] boardrep){
+        
+        if(boardrep == null || boardrep.length != BOARD_SIZE){
+            return false;
+        }
+        
+        for(int i = 0; i < BOARD_SIZE; ++i){
+            if (boardrep[i].length() != BOARD_SIZE){
+                return false;
+            }
+        }
+        
+        int player1Count = 0;
+        int player2Count = 0;
+        
+        for(int i = 0; i < BOARD_SIZE; ++i){
+            for(int j = 0; j < BOARD_SIZE; ++j){
+                if(boardrep[i].charAt(j) == '1'){
+                    ++player1Count;
+                } else if(boardrep[i].charAt(j) == '2'){
+                    ++player2Count;
+                }
+            }
+        }
+        
+        if(player1Count == 4 && player2Count == 4){
+            return true;
+        }
+        return false;
+    }
 
     public ReadOnlyObjectProperty<Square> squareProperty(int i, int j) {
         return board[i][j].getReadOnlyProperty();
@@ -49,11 +88,13 @@ public class BoardGameModel {
         return board[i][j].get();
     }
     
-    public boolean legalMove(int fromX, int fromY, int toX, int toY) {
+    public boolean legalMove(BoardPosition from, BoardPosition to) {
         
-        if (fromX < 0 || fromY < 0) {
-            return false;
-        }
+        int fromX = from.xPos;
+        int fromY = from.yPos;
+        int toX = to.xPos;
+        int toY = to.yPos;
+        
         if(board[fromX][fromY].get() != currentPlayer){
             return false;
         }
@@ -133,7 +174,13 @@ public class BoardGameModel {
         return false;
     }
     
-    public void move(int fromX, int fromY, int toX, int toY){
+    public void move(BoardPosition from, BoardPosition to){
+        
+        int fromX = from.xPos;
+        int fromY = from.yPos;
+        int toX = to.xPos;
+        int toY = to.yPos;
+        
         board[toX][toY].set(board[fromX][fromY].get());
         board[fromX][fromY].set(Square.NONE);
         if(currentPlayer == Square.PLAYER1){
