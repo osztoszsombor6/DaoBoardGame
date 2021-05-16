@@ -75,10 +75,11 @@ public class BoardGameModel {
     }
     
      /**
+      * Checks whether the given representation is a valid board state.
       * @param boardrep an array containing four Strings with four characters. Should contain four '1' characters
       * and four '2' characters representing the disks of the players. The other characters represent empty spaces.
-     * {@return {@code true} if the given array is a valid board representation, {@code false} otherwise}
-     */
+      * {@return {@code true} if the given array is a valid board representation, {@code false} otherwise}
+      */
     public boolean isValidTray(String[] boardrep){
         
         if(boardrep == null || boardrep.length != BOARD_SIZE){
@@ -115,6 +116,7 @@ public class BoardGameModel {
     }
 
     /**
+     * Gets the state of the square at the given coordinates.  
      * @param i the row index of the square
      * @param j the column index of the square
      * {@return the state of the square with the given coordinates}
@@ -124,10 +126,10 @@ public class BoardGameModel {
     }
     
     /**
+     * Checks if a given disk can be moved to a given spot.
      * @param from the {@code BoardPosition} a disk may be moved from.
      * @param to the {@code BoardPosition} a disk may be moved to.
-     * {@return {@code true} if moving a disk from the first position to the second position is a legal move,
-     * {@code false} otherwise.}
+     * {@return {@code true} if moving a disk from the first position to the second position is a legal move, {@code false} otherwise.}
      */
     public boolean legalMove(BoardPosition from, BoardPosition to) {
         
@@ -215,9 +217,9 @@ public class BoardGameModel {
     }
     
     /**
+     * Moves the disk from the first position to the second position.
      * @param from the {@code BoardPosition} a disk is  moved from.
      * @param to the {@code BoardPosition} a disk is moved to.
-     * Moves the disk from the first position to the second position.
      */
     public void move(BoardPosition from, BoardPosition to){
         
@@ -372,7 +374,7 @@ public class BoardGameModel {
     }
     
     /**
-     * {@return the winner of the game, or {@code Square.NONE} if the game has not ended.
+     * {@return the winner of the game, or {@code Square.NONE} if the game has not ended}
      */
     public Square getWinner(){
         if(!isEndState2x2() &&
@@ -398,7 +400,7 @@ public class BoardGameModel {
     }
     
     /**
-     * {@return a {@code String} representation of the board.
+     * {@return a {@code String} representation of the board}
      */
     @Override
     public String toString() {

@@ -7,6 +7,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * Class representing the board game application.
+ */
 public class BoardGameApplication extends Application {
 
     @Override
