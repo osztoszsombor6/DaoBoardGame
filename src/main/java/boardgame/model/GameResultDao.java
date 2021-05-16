@@ -18,11 +18,8 @@ public class GameResultDao extends GenericJpaDao<GameResult> {
     }
 
     public static GameResultDao getInstance() {
-        if (instance == null) {
-            instance = new GameResultDao();
-            EntityManagerFactory emf = Persistence.createEntityManagerFactory("BoardGamePU");
-            instance.setEntityManager(Persistence.createEntityManagerFactory("BoardGamePU").createEntityManager());
-        }
+        instance = new GameResultDao();
+        instance.setEntityManager(Persistence.createEntityManagerFactory("BoardGamePU").createEntityManager());
         return instance;
     }
 

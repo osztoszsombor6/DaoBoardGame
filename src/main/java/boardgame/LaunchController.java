@@ -1,6 +1,5 @@
 package boardgame;
 
-import boardgame.BoardGameController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +13,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Class for controlling the launch game scene.
+ */
 @Slf4j
 public class LaunchController {
 

@@ -28,6 +28,9 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Class for controlling the match and the game scene.
+ */
 @Slf4j
 public class BoardGameController {
 
@@ -122,7 +125,6 @@ public class BoardGameController {
         player1Label.setText("Player 1: " + this.player1Name);
         player2Label.setText("Player 2: " + this.player2Name);
         started = ZonedDateTime.now();
-        gameResultDao = GameResultDao.getInstance();
         markActiveLabel();
     }
     
@@ -255,6 +257,7 @@ public class BoardGameController {
                         winCondition = "Cornered";
                     }
                     setEndState();
+                    gameResultDao = GameResultDao.getInstance();
                     persistGame();
                     showEndState();
                 }

@@ -24,6 +24,9 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+/**
+ * Class for controlling the results scene.
+ */
 @Slf4j
 public class LatestTenController {
 
