@@ -47,9 +47,15 @@ public class GameResult {
     @Column(nullable = false)
     private String winCondition;
     
+    /**
+     * The timestamp when the match was started.
+     */
     @Column(nullable = false)
     private ZonedDateTime started;
     
+    /**
+     * The timestamp when the match ended.
+     */
     @Column(nullable = false)
     private ZonedDateTime finished;
 
@@ -64,7 +70,10 @@ public class GameResult {
      */
     @Column(nullable = false)
     private ZonedDateTime created;
-
+    
+    /**
+     * Saves the creation timestamp before a match result is persisted.
+     */
     @PrePersist
     protected void onPersist() {
         created = ZonedDateTime.now();

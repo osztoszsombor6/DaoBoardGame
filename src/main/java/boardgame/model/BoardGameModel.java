@@ -3,18 +3,36 @@ package boardgame.model;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 
+/**
+ * Class representing a possible state of a Dao match. 
+ */
 public class BoardGameModel {
 
+    /**
+    * The width and height of the board, given in number of squares.
+    */
     public static int BOARD_SIZE = 4;
 
+    /**
+    * An array representing the current state of the board.
+    */
     private ReadOnlyObjectWrapper<Square>[][] board = new ReadOnlyObjectWrapper[BOARD_SIZE][BOARD_SIZE];
     
+    /**
+    * The player who is next to make a move in the current state.
+    */
     private Square currentPlayer;
     
+    /**
+     * {@return the player who can make a move in the state}
+     */
     public Square getCurrentPlayer(){
         return this.currentPlayer;
     }
 
+    /**
+     * Creates a {@code BoardGameModel} object representing the initial state of the match.
+     */
     public BoardGameModel() {
         
         this(new String[]
@@ -26,6 +44,13 @@ public class BoardGameModel {
         
     }
     
+    /**
+     * Creates a {@code BoardGameModel} object that is initialised with the given array and first player.
+     * @param boardrep an array of size 4&#xd7;4 representing the initial configuration of the tray
+     * @param player the player who can make the next step
+     * @throws IllegalArgumentException if the array does not represent a valid configuration of the tray
+     * @throws IllegalArgumentException if the given player is invalid
+     */
     public BoardGameModel(String[] boardrep, Square player){
         
         if(player == null || player == Square.NONE){
@@ -49,6 +74,11 @@ public class BoardGameModel {
         currentPlayer = player;
     }
     
+     /**
+      * @param boardrep an array containing four Strings with four characters. Should contain four '1' characters
+      * and four '2' characters representing the disks of the players. The other characters represent empty spaces.
+     * {@return {@code true} if the given array is a valid board representation, {@code false} otherwise}
+     */
     public boolean isValidTray(String[] boardrep){
         
         if(boardrep == null || boardrep.length != BOARD_SIZE){
@@ -84,10 +114,21 @@ public class BoardGameModel {
         return board[i][j].getReadOnlyProperty();
     }
 
+    /**
+     * @param i the row index of the square
+     * @param j the column index of the square
+     * {@return the state of the square with the given coordinates}
+     */
     public Square getSquare(int i, int j) {
         return board[i][j].get();
     }
     
+    /**
+     * @param from the {@code BoardPosition} a disk may be moved from.
+     * @param to the {@code BoardPosition} a disk may be moved to.
+     * {@return {@code true} if moving a disk from the first position to the second position is a legal move,
+     * {@code false} otherwise.}
+     */
     public boolean legalMove(BoardPosition from, BoardPosition to) {
         
         int fromX = from.xPos;
@@ -174,6 +215,11 @@ public class BoardGameModel {
         return false;
     }
     
+    /**
+     * @param from the {@code BoardPosition} a disk is  moved from.
+     * @param to the {@code BoardPosition} a disk is moved to.
+     * Moves the disk from the first position to the second position.
+     */
     public void move(BoardPosition from, BoardPosition to){
         
         int fromX = from.xPos;
@@ -190,6 +236,9 @@ public class BoardGameModel {
         }
     }
     
+    /**
+     * {@return {@code true} if a player has won the game by placing their disks in a 2&#xd7;2 area {@code false} otherwise}
+     */
     public boolean isEndState2x2(){
         Square otherPlayer;
         if(currentPlayer == Square.PLAYER1){
@@ -213,6 +262,10 @@ public class BoardGameModel {
         return false;
     }
     
+    /**
+     * {@return {@code true} if a player has won the game by placing their disks in
+     * the four corners of the board {@code false} otherwise}
+     */
     public boolean isEndStateCorners(){
         Square otherPlayer;
         if(currentPlayer == Square.PLAYER1){
@@ -230,6 +283,9 @@ public class BoardGameModel {
         }
     }
     
+    /**
+     * {@return {@code true} if a player has won the game by placing their disks in a column {@code false} otherwise}
+     */
     public boolean isEndStateCol(){
         Square otherPlayer;
         if(currentPlayer == Square.PLAYER1){
@@ -250,6 +306,9 @@ public class BoardGameModel {
         return false;
     }
     
+    /**
+     * {@return {@code true} if a player has won the game by placing their disks in a row {@code false} otherwise}
+     */
     public boolean isEndStateRow(){
         Square otherPlayer;
         if(currentPlayer == Square.PLAYER1){
@@ -270,6 +329,10 @@ public class BoardGameModel {
         return false;
     }
     
+    /**
+     * {@return {@code true} if a player has lost the game by placing their disks 
+     * around a disk in the corner belonging to the other player {@code false} otherwise}
+     */
     public boolean isEndStateCornered(){
         Square otherPlayer;
         if(currentPlayer == Square.PLAYER1){
@@ -309,6 +372,9 @@ public class BoardGameModel {
         return false;
     }
     
+    /**
+     * {@return the winner of the game, or {@code Square.NONE} if the game has not ended.
+     */
     public Square getWinner(){
         if(!isEndState2x2() &&
                 !isEndStateCol() &&
@@ -331,7 +397,10 @@ public class BoardGameModel {
             return otherPlayer;
         }
     }
-
+    
+    /**
+     * {@return a {@code String} representation of the board.
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
