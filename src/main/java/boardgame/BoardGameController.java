@@ -211,7 +211,7 @@ public class BoardGameController {
         var row = GridPane.getRowIndex(square);
         var col = GridPane.getColumnIndex(square);
         //System.out.printf("Click on square (%d,%d)\n", row, col);
-        log.debug("Click on square ({},{})\n", row, col);
+        log.debug("Click on square ({},{})", row, col);
         for (int i = 0; i < board.getRowCount(); i++) {
             for (int j = 0; j < board.getColumnCount(); j++) {
                 Node n = getNodeByRowColumnIndex(i, j, board);
@@ -221,8 +221,6 @@ public class BoardGameController {
         }
         
         if((x == -1 && y == -1) && model.getSquare(row, col) == model.getCurrentPlayer()){
-            log.info(model.getSquare(row, col).toString());
-            log.info(model.getCurrentPlayer().toString());
             square.getStyleClass().add("kivalasztott");
             x = row;
             y = col;
@@ -242,10 +240,10 @@ public class BoardGameController {
             }
         } else {
             if(x != -1 && y !=-1){
-                System.out.println("lephet(" + x + "," + y + "," + row + "," + col +")");
                 if(model.legalMove(x,y,row,col)){
-                model.move(x, y, row, col);
-                markActiveLabel();
+                    log.info("{} moving from ({},{}) to ({},{})", model.getCurrentPlayer(), x, y, row, col);
+                    model.move(x, y, row, col);
+                    markActiveLabel();
                 
                 }
                 x = -1;
@@ -259,21 +257,20 @@ public class BoardGameController {
                     persistGame();
                     showEndState();
                     
-                    System.out.println("Game ended");
                     if(model.isEndState2x2()){
-                        System.out.println("2x2");
+                        log.info("Game ended, {} wins with 2x2 area", model.getWinner());
                     }
                     if(model.isEndStateCol()){
-                        System.out.println("Col");
+                        log.info("Game ended, {} wins with column", model.getWinner());
                     }
                     if(model.isEndStateRow()){
-                        System.out.println("Row");
+                        log.info("Game ended, {} wins with row", model.getWinner());
                     }
                     if(model.isEndStateCorners()){
-                        System.out.println("Corners");
+                        log.info("Game ended, {} wins with 4 corners", model.getWinner());
                     }
                     if(model.isEndStateCornered()){
-                        System.out.println("Cornered");
+                        log.info("Game ended, {} wins, cornered disk", model.getWinner());
                     }
                     
                 }
@@ -289,5 +286,6 @@ public class BoardGameController {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
         stage.show();
+        log.info("Loading latest ten matches scene");
     }
 }

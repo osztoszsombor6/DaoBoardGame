@@ -5,13 +5,19 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Root level="info">
+        <!-- Root level="all">
             <AppenderRef ref="Console"/>
-        </Root>
-        <Logger name="boardgame.BoardGameController" level="all" >
+        </Root -->
+        <Logger name="boardgame.LaunchController" level="all" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
-        <Logger name="org.hibernate.SQL" level="all" additivity="false">
+        <Logger name="boardgame.BoardGameController" level="all" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="boardgame.LatestTenController" level="all" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="org.hibernate.SQL" level="info" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
         <Logger name="org.hibernate.type.descriptor.sql" level="all" additivity="false">

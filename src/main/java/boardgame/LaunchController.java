@@ -12,7 +12,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class LaunchController {
 
     @FXML
@@ -35,7 +37,7 @@ public class LaunchController {
             stage.setScene(new Scene(root));
             stage.show();
             
-            //log.info("Username is set to {}, loading game scene.", usernameTextfield.getText());
+            log.info("Player1 is set to {}, Player 2 is set to {}, loading game scene.", player1Textfield.getText(), player2Textfield.getText());
         }
 
     }
