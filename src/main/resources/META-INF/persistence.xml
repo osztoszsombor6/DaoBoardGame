@@ -8,7 +8,7 @@
       <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://remotemysql.com:3306/3of2GwEj10?useUnicode=true&amp;characterEncoding=utf8"/>
       <property name="javax.persistence.jdbc.password" value="eCgygVPCve"/>
-      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
       <property name="javax.persistence.jdbc.user" value="3of2GwEj10"/>
       <property name="hibernate.hbm2ddl.auto" value="update"/>
       <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>

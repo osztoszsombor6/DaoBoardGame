@@ -5,9 +5,9 @@
         </Console>
     </Appenders>
     <Loggers>
-        <!-- Root level="all">
+        <Root level="all">
             <AppenderRef ref="Console"/>
-        </Root -->
+        </Root>
         <Logger name="boardgame.LaunchController" level="all" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
@@ -17,7 +17,7 @@
         <Logger name="boardgame.LatestTenController" level="all" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
-        <Logger name="org.hibernate.SQL" level="info" additivity="false">
+        <!-- Logger name="org.hibernate.SQL" level="info" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
         <Logger name="org.hibernate.type.descriptor.sql" level="all" additivity="false">
@@ -28,6 +28,6 @@
         </Logger>
         <Logger name="org.hibernate.validator" level="all" additivity="false">
             <AppenderRef ref="Console"/>
-        </Logger>
+        </Logger -->
     </Loggers>
 </Configuration>
